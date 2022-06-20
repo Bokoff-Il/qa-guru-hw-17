@@ -1,4 +1,4 @@
-package tests;
+package bokoff.il.tests;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.get;

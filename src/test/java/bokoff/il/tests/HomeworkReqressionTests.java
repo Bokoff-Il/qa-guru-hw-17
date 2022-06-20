@@ -1,9 +1,12 @@
-package tests;
+package bokoff.il.tests;
 
-import static io.restassured.RestAssured.delete;
+import static bokoff.il.specs.Specs.request;
+import static bokoff.il.specs.Specs.responseFailed;
+import static bokoff.il.specs.Specs.responseSuccess;
+import static bokoff.il.specs.Specs.successRegisterTest;
+import static bokoff.il.specs.Specs.updateUserResponse;
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.get;
-import static io.restassured.http.ContentType.JSON;
+
 import static org.hamcrest.Matchers.is;
 
 import org.junit.jupiter.api.Test;
@@ -18,18 +21,14 @@ public class HomeworkReqressionTests {
                 + "}";
 
     given()
-        .log().uri()
-        .log().body()
+        .spec(request)
         .body(body)
-        .contentType(JSON)
+
         .when()
-        .post("https://reqres.in/api/register")
+        .post("/register")
+
         .then()
-        .log().status()
-        .log().body()
-        .statusCode(200)
-        .body("id", is(4))
-        .body("token", is("QpwL5tke4Pnpja7X4"));
+        .spec(successRegisterTest);
   }
 
   @Test
@@ -39,34 +38,30 @@ public class HomeworkReqressionTests {
                 + "}";
 
     given()
-        .log().uri()
-        .log().body()
+        .spec(request)
         .body(body)
-        .contentType(JSON)
+
         .when()
-        .post("https://reqres.in/api/register")
+        .post("/register")
+
         .then()
-        .log().status()
-        .log().body()
-        .statusCode(400)
+        .spec(responseFailed)
         .body("error", is("Missing password"));
   }
 
   @Test
-  void missingEmailAndPasswordlRegisterTest(){
+  void missingEmailAndPasswordRegisterTest(){
     String body="{}";
 
     given()
-        .log().uri()
-        .log().body()
+        .spec(request)
         .body(body)
-        .contentType(JSON)
+
         .when()
-        .post("https://reqres.in/api/register")
+        .post("/register")
+
         .then()
-        .log().status()
-        .log().body()
-        .statusCode(400)
+        .spec(responseFailed)
         .body("error", is("Missing email or username"));
   }
 
@@ -74,13 +69,13 @@ public class HomeworkReqressionTests {
   void getListUserTest(){
     Integer page=3;
     given()
-        .log().uri()
+        .spec(request)
+
         .when()
-        .get("https://reqres.in/api/users?page="+page)
+        .get("/users?page="+page)
+
         .then()
-        .log().status()
-        .log().body()
-        .statusCode(200)
+        .spec(responseSuccess)
         .body("page", is(page))
         .body("support.url", is("https://reqres.in/#support-heading"))
         .body("support.text", is("To keep ReqRes free, contributions towards server costs are appreciated!"));
@@ -89,7 +84,12 @@ public class HomeworkReqressionTests {
   @Test
   void getSingleUserNotFoundTest(){
     Integer user=23;
-    get("https://reqres.in/api/users/"+user)
+    given()
+        .spec(request)
+
+        .when()
+        .get("/users/"+user)
+
         .then()
         .statusCode(404);
   }
@@ -102,18 +102,14 @@ public class HomeworkReqressionTests {
                 + "}";
 
     given()
-        .log().uri()
-        .log().body()
+        .spec(request)
         .body(body)
-        .contentType(JSON)
+
         .when()
-        .put("https://reqres.in/api/users/2")
+        .put("users/2")
+
         .then()
-        .log().status()
-        .log().body()
-        .statusCode(200)
-        .body("name", is("ilya"))
-        .body("job", is("QAA"));
+        .spec(updateUserResponse);
   }
 
   @Test
@@ -124,23 +120,22 @@ public class HomeworkReqressionTests {
                 + "}";
 
     given()
-        .log().uri()
-        .log().body()
+        .spec(request)
         .body(body)
-        .contentType(JSON)
+
         .when()
-        .patch("https://reqres.in/api/users/2")
+        .patch("/users/2")
+
         .then()
-        .log().status()
-        .log().body()
-        .statusCode(200)
-        .body("name", is("ilya"))
-        .body("job", is("QAA"));
+        .spec(updateUserResponse);
   }
 
   @Test
   void deleteUserTest(){
-    delete("https://reqres.in/api/users/2")
+    given().
+        when().
+        delete("https://reqres.in/api/users/2")
+
         .then()
         .statusCode(204);
   }
