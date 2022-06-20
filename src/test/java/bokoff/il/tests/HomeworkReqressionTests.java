@@ -22,26 +22,22 @@ public class HomeworkReqressionTests {
     given()
         .spec(request)
         .body(body)
-
         .when()
         .post("/register")
-
         .then()
         .spec(successRegisterTest);
   }
 
   @Test
   void missingPasswordRegisterTest(){
-    String email = "eve.holt@reqres.in";;
+    String email = "eve.holt@reqres.in";
     Credentials body = new Credentials(email, null);
 
     given()
         .spec(request)
         .body(body)
-
         .when()
         .post("/register")
-
         .then()
         .spec(responseFailed)
         .body("error", is("Missing password"));
@@ -54,10 +50,8 @@ public class HomeworkReqressionTests {
     given()
         .spec(request)
         .body(body)
-
         .when()
         .post("/register")
-
         .then()
         .spec(responseFailed)
         .body("error", is("Missing email or username"));
@@ -68,10 +62,8 @@ public class HomeworkReqressionTests {
     Integer page=3;
     given()
         .spec(request)
-
         .when()
         .get("/users?page="+page)
-
         .then()
         .spec(responseSuccess)
         .body("page", is(page))
@@ -84,10 +76,8 @@ public class HomeworkReqressionTests {
     Integer user=23;
     given()
         .spec(request)
-
         .when()
         .get("/users/"+user)
-
         .then()
         .statusCode(404);
   }
@@ -101,10 +91,8 @@ public class HomeworkReqressionTests {
     given()
         .spec(request)
         .body(body)
-
         .when()
         .put("users/2")
-
         .then()
         .spec(updateUserResponse);
   }
@@ -118,10 +106,8 @@ public class HomeworkReqressionTests {
     given()
         .spec(request)
         .body(body)
-
         .when()
         .patch("/users/2")
-
         .then()
         .spec(updateUserResponse);
   }
@@ -131,7 +117,6 @@ public class HomeworkReqressionTests {
     given().
         when().
         delete("https://reqres.in/api/users/2")
-
         .then()
         .statusCode(204);
   }
