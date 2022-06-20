@@ -6,19 +6,18 @@ import static bokoff.il.specs.Specs.responseSuccess;
 import static bokoff.il.specs.Specs.successRegisterTest;
 import static bokoff.il.specs.Specs.updateUserResponse;
 import static io.restassured.RestAssured.given;
-
 import static org.hamcrest.Matchers.is;
-
+import bokoff.il.models.Credentials;
+import bokoff.il.models.User;
 import org.junit.jupiter.api.Test;
 
 public class HomeworkReqressionTests {
 
   @Test
   void successRegisterTest(){
-    String body="{\n"
-                + "    \"email\": \"eve.holt@reqres.in\",\n"
-                + "    \"password\": \"pistol\"\n"
-                + "}";
+    String email = "eve.holt@reqres.in";
+    String password = "pistol";
+    Credentials body = new Credentials(email, password);
 
     given()
         .spec(request)
@@ -32,10 +31,9 @@ public class HomeworkReqressionTests {
   }
 
   @Test
-  void missingPasswordlRegisterTest(){
-    String body="{\n"
-                + "    \"email\": \"sydney@fife\"\n"
-                + "}";
+  void missingPasswordRegisterTest(){
+    String email = "eve.holt@reqres.in";;
+    Credentials body = new Credentials(email, null);
 
     given()
         .spec(request)
@@ -51,7 +49,7 @@ public class HomeworkReqressionTests {
 
   @Test
   void missingEmailAndPasswordRegisterTest(){
-    String body="{}";
+    Credentials body = new Credentials(null, null);
 
     given()
         .spec(request)
@@ -96,10 +94,9 @@ public class HomeworkReqressionTests {
 
   @Test
   void updateUserPutRequestsTest(){
-    String body="{\n"
-                + "    \"name\": \"ilya\",\n"
-                + "    \"job\": \"QAA\"\n"
-                + "}";
+    String name = "ilya";
+    String job = "QAA";
+    User body = new User(name, job);
 
     given()
         .spec(request)
@@ -114,10 +111,9 @@ public class HomeworkReqressionTests {
 
   @Test
   void updateUserPatchRequestsTest(){
-    String body="{\n"
-                + "    \"name\": \"ilya\",\n"
-                + "    \"job\": \"QAA\"\n"
-                + "}";
+    String name = "ilya";
+    String job = "QAA";
+    User body = new User(name, job);
 
     given()
         .spec(request)
