@@ -69,7 +69,7 @@ public class DemoWebShopTests extends TestBase {
   }
 
   @Test
-  @DisplayName("Successful authorization to some demowebshop (UI+API+Listener")
+  @DisplayName("Successful authorization to some demowebshop (UI+API+Listener)")
   void loginWithApiAndAllureListenerTest() {
     step("Get cookie by api and set it to browser", () -> {
       String authorizationCookieValue = given()
